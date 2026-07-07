@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Personalise Your Agents — Prototype</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+  <div class="desktop">
+    <div class="window" id="window">
+
+      <!-- macOS style navbar -->
+      <header class="navbar">
+        <div class="traffic-lights">
+          <span class="light red"></span>
+          <span class="light yellow"></span>
+          <span class="light green"></span>
+        </div>
+        <button class="sidebar-icon" aria-label="Toggle sidebar">
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+            <rect x="2.5" y="4" width="15" height="12" rx="2.5" stroke="#6E8CAE" stroke-width="1.3"/>
+            <line x1="7.5" y1="4.5" x2="7.5" y2="15.5" stroke="#6E8CAE" stroke-width="1.3"/>
+            <rect x="3.5" y="6" width="2.5" height="1.5" rx="0.5" fill="#6E8CAE"/>
+          </svg>
+        </button>
+      </header>
+
+      <!-- Chat layer (screens 06 First Chat / 08 Profile not Set up) -->
+      <main class="chat-layer" id="chatLayer" hidden>
+        <button class="upgrade-pill">Upgrade your plan</button>
+
+        <div class="chat-center">
+          <div class="avatar-item avatar-hero selected" id="chatAvatar">
+            <span class="avatar-emoji" id="chatAvatarEmoji">🐼</span>
+            <span class="avatar-check"><svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2.5 6.2L5 8.7L9.5 3.5" stroke="white" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+          </div>
+          <!-- 08: generic silhouette — click to resume personalisation -->
+          <button class="avatar-hero avatar-generic" id="chatAvatarGeneric" title="Personalise your assistant" hidden>
+            <svg width="96" height="96" viewBox="0 0 96 96">
+              <clipPath id="avatarClip"><circle cx="48" cy="48" r="48"/></clipPath>
+              <g clip-path="url(#avatarClip)">
+                <circle cx="48" cy="48" r="48" fill="#E8E8ED"/>
+                <circle cx="48" cy="38" r="14" fill="#C7C7CC"/>
+                <path d="M20 82c3-16 14-24 28-24s25 8 28 24" fill="#C7C7CC"/>
+              </g>
+            </svg>
+          </button>
+          <h1 class="chat-hero">Hi Jarret!</h1>
+          <p class="chat-sub">How can I help you today?</p>
+        </div>
+
+        <!-- Floating chips & bubbles -->
+        <button class="chip-btn quick-actions" id="quickActionsBtn"><span class="chip-glyph">✦</span><span>Quick Actions</span></button>
+        <button class="chip-btn add-context" id="addContextBtn"><span class="chip-glyph">◎</span><span>Add Context</span></button>
+
+        <div class="context-bubble bubble-morning">Good Morning ☀️</div>
+        <div class="context-bubble bubble-date">Today is June 28, Sunday.</div>
+      </main>
+
+      <!-- Ask-me-anything input bar -->
+      <footer class="input-bar">
+        <span class="plus">+</span>
+        <input type="text" class="ask-input" placeholder="Ask Me Anything" />
+        <span class="model-label">Sonnet 4.6</span>
+        <button class="mic-btn" aria-label="Voice input">
+          <svg width="18" height="24" viewBox="0 0 18 24" fill="none">
+            <rect x="5.5" y="1.5" width="7" height="12.5" rx="3.5" stroke="#007AFF" stroke-width="1.6"/>
+            <path d="M2 11.5c0 4 3.1 7 7 7s7-3 7-7" stroke="#007AFF" stroke-width="1.6" stroke-linecap="round"/>
+            <line x1="9" y1="18.5" x2="9" y2="22" stroke="#007AFF" stroke-width="1.6" stroke-linecap="round"/>
+          </svg>
+        </button>
+      </footer>
+
+      <!-- Scrim + modals (screens 01–05) -->
+      <div class="scrim" id="scrim"></div>
+
+      <!-- 01 Welcome -->
+      <section class="modal modal-welcome" id="modal-welcome" hidden>
+        <h2 class="modal-hero">Personal Assistant Branding</h2>
+        <div class="branding-box"><p>Add Branding</p></div>
+        <button class="btn btn-primary" id="getStartedBtn">Get Started</button>
+      </section>
+
+      <!-- 02 Name -->
+      <section class="modal" id="modal-name" hidden>
+        <div class="progress">
+          <span class="dot active"></span><span class="rule"></span>
+          <span class="dot"></span><span class="rule"></span>
+          <span class="dot"></span>
+        </div>
+        <h2 class="modal-title">Personalise your Assistant.</h2>
+        <div class="field-group">
+          <label class="field-label" for="nameInput">Name:</label>
+          <input class="text-field" id="nameInput" type="text" maxlength="20" placeholder="e.g. Bart, Atlas, Nova..." autocomplete="off" />
+          <span class="char-count" id="charCount">0/20</span>
+          <span class="field-error" id="nameError" hidden>Please enter a name (2-20 characters)</span>
+        </div>
+        <div class="spacer"></div>
+        <div class="actions">
+          <button class="btn btn-primary" data-continue="name" disabled>Continue</button>
+          <button class="btn btn-secondary" data-skip="name">Skip</button>
+        </div>
+        <button class="close-btn" data-close aria-label="Close">&times;</button>
+      </section>
+
+      <!-- 03 Avatar (+ upload sub-flow: 01 Upload / 03 Change) -->
+      <!-- Default matches Figma 03 Avatar (full-width upload + helper) -->
+      <section class="modal" id="modal-avatar" hidden data-upload-step="upload">
+        <div class="progress">
+          <span class="dot completed"></span><span class="rule"></span>
+          <span class="dot active"></span><span class="rule"></span>
+          <span class="dot"></span>
+        </div>
+        <h2 class="modal-title">Assistant Avatar</h2>
+        <div class="avatars" id="avatarList">
+          <!-- Custom photo slot (03 Change) — first in the scrollable row -->
+          <button type="button" class="avatar-item avatar-custom" id="customAvatarItem" data-custom hidden>
+            <span class="avatar-emoji" id="customAvatarEmoji" hidden></span>
+            <span class="avatar-check"><svg width="10" height="10" viewBox="0 0 12 12" fill="none"><path d="M2.5 6.2L5 8.7L9.5 3.5" stroke="white" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+          </button>
+          <button class="avatar-item selected" data-emoji="🐼"><span class="avatar-emoji">🐼</span><span class="avatar-check"><svg width="10" height="10" viewBox="0 0 12 12" fill="none"><path d="M2.5 6.2L5 8.7L9.5 3.5" stroke="white" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span></button>
+          <button class="avatar-item" data-emoji="🦉"><span class="avatar-emoji">🦉</span><span class="avatar-check"><svg width="10" height="10" viewBox="0 0 12 12" fill="none"><path d="M2.5 6.2L5 8.7L9.5 3.5" stroke="white" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span></button>
+          <button class="avatar-item" data-emoji="🤖"><span class="avatar-emoji">🤖</span><span class="avatar-check"><svg width="10" height="10" viewBox="0 0 12 12" fill="none"><path d="M2.5 6.2L5 8.7L9.5 3.5" stroke="white" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span></button>
+          <button class="avatar-item" data-emoji="🐻"><span class="avatar-emoji">🐻</span><span class="avatar-check"><svg width="10" height="10" viewBox="0 0 12 12" fill="none"><path d="M2.5 6.2L5 8.7L9.5 3.5" stroke="white" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span></button>
+        </div>
+
+        <!-- Default = Figma 03 Avatar -->
+        <div class="upload-panel upload-panel-wide" id="uploadPanelOwn">
+          <button type="button" class="btn btn-secondary btn-block" id="uploadPickBtn">Upload your own:</button>
+          <p class="upload-helper">PNG or JPG · Max 5 MB · Square photos work best</p>
+          <p class="upload-error" id="uploadError" hidden></p>
+        </div>
+
+        <!-- 03 Change (after crop) -->
+        <div class="upload-panel upload-panel-change" id="uploadPanelChange" hidden>
+          <button type="button" class="btn btn-secondary btn-block" id="uploadChangeBtn">Change:</button>
+          <p class="upload-helper">Your photo appears in chat as a circle.</p>
+        </div>
+
+        <input type="file" id="uploadInput" accept="image/png,image/jpeg,image/jpg" hidden />
+
+        <div class="spacer"></div>
+        <div class="actions">
+          <button class="btn btn-primary" data-continue="avatar">Continue</button>
+          <button class="btn btn-secondary" data-skip="avatar">Skip</button>
+        </div>
+        <button class="close-btn" data-close aria-label="Close">&times;</button>
+      </section>
+
+      <!-- Crop Modal (upload sub-flow) -->
+      <section class="modal modal-crop" id="modal-crop" hidden>
+        <div class="crop-header">
+          <h2 class="crop-title">Crop your photo</h2>
+          <p class="crop-subtitle">Drag to reposition · Pinch or slider to zoom</p>
+        </div>
+        <div class="crop-body">
+          <div class="crop-viewport" id="cropViewport">
+            <img class="crop-image" id="cropImage" alt="" draggable="false" />
+            <div class="crop-mask" aria-hidden="true"></div>
+          </div>
+          <div class="crop-zoom-row">
+            <button type="button" class="crop-zoom-btn" id="cropZoomOut" aria-label="Zoom out">−</button>
+            <input type="range" class="crop-zoom" id="cropZoom" min="1" max="3" step="0.01" value="1" />
+            <button type="button" class="crop-zoom-btn" id="cropZoomIn" aria-label="Zoom in">+</button>
+          </div>
+        </div>
+        <div class="actions">
+          <button type="button" class="btn btn-secondary" id="cropCancelBtn">Cancel</button>
+          <button type="button" class="btn btn-primary" id="cropUseBtn">Use Photo</button>
+        </div>
+      </section>
+
+      <!-- 04 Tone -->
+      <section class="modal" id="modal-tone" hidden>
+        <div class="progress">
+          <span class="dot completed"></span><span class="rule"></span>
+          <span class="dot completed"></span><span class="rule"></span>
+          <span class="dot active"></span>
+        </div>
+        <h2 class="modal-title">Assistant Tone</h2>
+        <div class="tone-presets" id="tonePresets">
+          <button class="chip selected" data-tone="polished">Polished</button>
+          <button class="chip" data-tone="polite">Polite</button>
+          <button class="chip" data-tone="bold">Bold</button>
+        </div>
+        <div class="slider-group">
+          <div class="slider-labels"><span class="label-strong">Formal</span><span class="label-soft">Informal</span></div>
+          <input type="range" class="tone-slider" id="sliderFormal" min="0" max="100" value="45" />
+        </div>
+        <div class="slider-group">
+          <div class="slider-labels"><span class="label-strong">Upbeat</span><span class="label-soft">Reserved</span></div>
+          <input type="range" class="tone-slider" id="sliderUpbeat" min="0" max="100" value="30" />
+        </div>
+        <div class="slider-group">
+          <div class="slider-labels"><span class="label-strong">Empathetic</span><span class="label-soft">Direct</span></div>
+          <input type="range" class="tone-slider" id="sliderEmpathetic" min="0" max="100" value="10" />
+        </div>
+        <div class="spacer"></div>
+        <div class="actions">
+          <button class="btn btn-primary" data-continue="tone">Continue</button>
+          <button class="btn btn-secondary" data-skip="tone">Skip</button>
+        </div>
+        <button class="close-btn" data-close aria-label="Close">&times;</button>
+      </section>
+
+      <!-- 05 Confirmation -->
+      <section class="modal modal-confirm" id="modal-confirm" hidden>
+        <h2 class="modal-hero">You are all Set!</h2>
+        <div class="avatar-item avatar-hero selected" id="confirmAvatar">
+          <span class="avatar-emoji" id="confirmAvatarEmoji">🐼</span>
+          <span class="avatar-check"><svg width="14" height="14" viewBox="0 0 12 12" fill="none"><path d="M2.5 6.2L5 8.7L9.5 3.5" stroke="white" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+        </div>
+        <div class="closing-text">
+          <p class="confirm-line" id="confirmLine">Say hi to your polished assistant Bart!</p>
+          <p class="confirm-countdown">This window will autoclose in <span id="countdown">5</span>s</p>
+        </div>
+        <button class="close-btn" data-close aria-label="Close">&times;</button>
+      </section>
+
+    </div>
+  </div>
+
+  <!-- Prototype screen switcher (demo aid, not part of the design) -->
+  <nav class="proto-nav" id="protoNav" aria-label="Prototype screens">
+    <span class="proto-label">Screens</span>
+    <button data-screen="welcome">01</button>
+    <button data-screen="name">02</button>
+    <button data-screen="avatar">03</button>
+    <button data-screen="tone">04</button>
+    <button data-screen="confirm">05</button>
+    <button data-screen="chat">06</button>
+  </nav>
+
+  <script src="script.js"></script>
+</body>
+</html>
