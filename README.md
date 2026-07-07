@@ -44,7 +44,7 @@ No fine-tuning, no model changes. Just structured context.
 
 ## The Gap
 
-This mechanism already exists in products today — Claude has project knowledge and custom instructions, ChatGPT has memory and custom instructions, Hermes has skills and profile files. The technical capability is there.
+This mechanism already exists in products today. Claude has project knowledge and custom instructions, ChatGPT has memory and custom instructions, Hermes has skills and profile files. The technical capability is there.
 
 What doesn't exist is a UI onboarding flow around it. Users find these settings buried in menus, or never discover them at all. The personalisation is treated as configuration, something you visit once and forget.
 
