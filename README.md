@@ -2,7 +2,6 @@
 
 Exploring how AI agents can feel personal, not generic.
 
-md
 [![Try the prototype](prototype/Desktop.png)](https://jho123870.github.io/agent-personalisation/prototype/)
 
 ---
