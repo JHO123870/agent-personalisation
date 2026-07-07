@@ -8,7 +8,7 @@ Exploring how AI agents can feel personal, not generic.
 
 ## What This Is
 
-A sub-project exploring the concept of agent personalisation. The core idea: collect a user's choices (name, avatar, tone) into a markdown file that gets injected into the LLM's system prompt on every turn. The agent doesn't just know your name — it has a persistent identity shaped by those choices.
+A sub-project exploring the concept of agent personalisation. The core idea: collect a user's choices (name, avatar, tone) into a markdown file that gets injected into the LLM's system prompt on every turn. The agent doesn't just know your name, it has a persistent identity shaped by those choices.
 
 Companies like Claude already use this pattern (project knowledge, custom instructions), but they frame it as configuration, not personalisation. This project explores what happens when you make it the first thing a user sees.
 
