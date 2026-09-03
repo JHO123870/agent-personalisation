@@ -52,11 +52,11 @@ body {
   background: #2e2e33;
   min-height: 100vh;
   color: var(--text-primary);
+  margin: 0;
   display: flex;
   align-items: center;
   justify-content: center;
-  overflow: auto;
-  padding: 24px;
+  overflow: hidden;
 }
 
 /* ============================================================
@@ -70,6 +70,17 @@ body {
   background: url("Desktop.png") no-repeat;
   background-size: var(--desktop-w) var(--desktop-h);
   overflow: hidden;
+  transform-origin: top left;
+}
+
+@media (max-width: 1512px) {
+  .desktop { transform: scale(calc(100vw / 1512)); }
+}
+@media (max-height: 982px) {
+  .desktop { transform: scale(calc(100vh / 982)); }
+}
+@media (max-width: 1512px) and (max-height: 982px) {
+  .desktop { transform: scale(min(calc(100vw / 1512), calc(100vh / 982))); }
 }
 
 .window {
